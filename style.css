@@ -1,0 +1,475 @@
+:root {
+    --primary-color: #000000; /* main black (Keep) */
+    --secondary-color: #4a4a4a; /* soft gray (Keep) */
+    --success-color: #198754; /* (Keep) */
+    --light-bg: #ffffff; /* white background (Keep) */
+    --dark-text: #000000; /* black text (Keep) */
+    --accent-color: #ff6f00; /* New: Sporty Orange/Gold for accents */
+    --danger-color: #dc3545; /* New: Red for remove/alerts */
+    --border-color: #e9ecef; /* New: Light border color */
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark-text); 
+}
+
+/* --- Global Styles: Buttons & Forms --- */
+
+/* Primary Button Styling */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Accent Button (e.g., Add to Cart) */
+.btn-accent {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+    font-weight: 700;
+}
+.btn-accent:hover {
+    background-color: #ff8c3e; /* Slightly lighter orange */
+    border-color: #ff8c3e;
+}
+
+/* Form Controls Styling */
+.form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.3s;
+}
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+/* --- Section Headers & Separators --- */
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+}
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+.divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 2rem 0;
+}
+
+/* --- Navbar (Refined) --- */
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1); 
+    padding: 0.75rem 1rem;
+}
+.navbar-brand {
+    font-weight: 900; 
+    font-size: 1.75rem; 
+    color: var(--primary-color) !important;
+    text-transform: uppercase;
+}
+.nav-link {
+    font-weight: 600;
+    color: var(--dark-text) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
+.nav-link:hover {
+    color: var(--accent-color) !important; 
+    background-color: #f8f9fa;
+}
+.cart-icon {
+    position: relative;
+    font-size: 1.25rem;
+}
+.cart-count {
+    top: -4px; 
+    right: -4px;
+    background-color: var(--danger-color); 
+    color: white;
+    padding: 2px 7px; 
+    font-size: 0.8rem;
+}
+
+/* --- Page Sections (Keep) --- */
+.page-section {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+.page-section.active {
+    display: block;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Hero Carousel (Refined) --- */
+.carousel-item {
+    height: 500px; 
+}
+.carousel-item img {
+    height: 100%; 
+    object-fit: cover;
+    filter: brightness(0.6); 
+}
+.carousel-caption {
+    bottom: 20%; 
+    text-align: left;
+    max-width: 60%;
+}
+.carousel-caption h5 {
+    font-size: 3rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.carousel-caption p {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+/* --- Product Card (Refined & New) --- */
+.product-card {
+    border: none; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--light-bg);
+}
+.product-card:hover {
+    transform: translateY(-8px); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+}
+.product-card-img-container {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+.product-card img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+.product-card:hover img {
+    transform: scale(1.05); 
+}
+
+.product-card-body {
+    padding: 1.25rem; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.product-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    min-height: 48px; 
+}
+.product-card-description {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    max-height: 40px;
+    overflow: hidden;
+    line-height: 1.3;
+}
+.product-price {
+    font-size: 1.5rem; 
+    font-weight: 800;
+    color: var(--accent-color); 
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+}
+.original-price {
+    color: var(--secondary-color);
+    text-decoration: line-through;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: 10px;
+}
+
+/* Product Badge/Discount */
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--danger-color);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* --- Category Icons (Refined) - แก้ไขตามคำขอ */
+.category-icon {
+    background: #f8f9fa;
+    padding: 30px 15px; 
+    border-radius: 18px; 
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid var(--border-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.category-icon:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    /* ไม่เปลี่ยนพื้นหลังเป็นสีดำ */
+    background-color: var(--light-bg); 
+    border: 1px solid var(--accent-color); /* เพิ่มขอบสีเน้น */
+}
+.category-icon:hover .category-name {
+    color: var(--primary-color); /* ให้ข้อความยังคงเป็นสีดำ */
+}
+.icon-img {
+    width: 50px; 
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    opacity: 0.85;
+    transition: 0.3s;
+    /* ลบ filter grayscale เพื่อให้ไอคอนสีเข้มยังคงชัดเจน */
+}
+.category-icon:hover .icon-img {
+    opacity: 1;
+    filter: none; 
+    transform: scale(1.1);
+}
+.category-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--dark-text);
+    transition: color 0.3s;
+}
+
+/* --- Cart Page (Refined) --- */
+.cart-table img {
+    width: 100px; 
+    height: 100px;
+    border-radius: 5px;
+}
+.cart-total-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+.cart-total-box h4 {
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.cart-remove-btn {
+    color: var(--danger-color);
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+.cart-remove-btn:hover {
+    color: var(--primary-color);
+}
+
+/* --- Footer (Keep) --- */
+footer {
+    background-color: var(--dark-text);
+    color: white;
+    margin-top: 50px;
+    padding: 50px 0; 
+}
+footer h5 {
+    color: var(--accent-color); 
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+footer a {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+footer a:hover {
+    color: var(--accent-color); 
+}
+.footer-social-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+/* --- Product Detail Page (Refined) --- */
+.product-detail-image {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.quantity-selector {
+    width: 100px;
+    text-align: center;
+    font-weight: 600;
+}
+.detail-price {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+.detail-description {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Team Members Page (Keep) --- */
+.team-member-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 30px;
+    height: 100%;
+}
+.team-member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.team-member-img {
+    height: 250px;
+    object-fit: cover;
+    width: 100%;
+}
+.team-member-info {
+    padding: 20px;
+    text-align: center;
+}
+.team-member-name {
+    font-size: 1.3rem; 
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+.team-member-position {
+    color: var(--accent-color); 
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.team-member-social {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.team-member-social a {
+    background-color: var(--border-color); 
+    color: var(--dark-text);
+}
+.team-member-social a:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+.team-member-social a.github:hover {
+    background-color: #333;
+}
+.team-member-social a.facebook:hover {
+    background-color: #1877f2;
+}
+.team-member-social a.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+}
+
+/* --- New: Special Promotion/CTA Banner --- */
+.promo-banner {
+    background: linear-gradient(90deg, var(--primary-color) 0%, #1a1a1a 100%);
+    color: white;
+    padding: 3rem 0;
+    margin: 3rem 0;
+    border-radius: 15px;
+    text-align: center;
+}
+.promo-banner h3 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+.promo-banner p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #cccccc;
+}
+.promo-banner .btn-accent {
+    padding: 0.75rem 3rem;
+    font-size: 1.2rem;
+    box-shadow: 0 6px 15px rgba(255, 111, 0, 0.4);
+}
+
+/* --- New: Review/Testimonial Card --- */
+.review-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+.review-card blockquote {
+    font-style: italic;
+    color: var(--secondary-color);
+    border-left: 4px solid var(--accent-color);
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+.reviewer-name {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.review-rating i {
+    color: var(--accent-color);
+}
+
+/* --- Responsive Settings (Keep) --- */
+@media (max-width: 767px) {
+    .team-member-card { margin-bottom: 20px; }
+    .carousel-item { height: 350px; }
+    .carousel-caption { bottom: 50px; max-width: 90%; }
+    .carousel-caption h5 { font-size: 2rem; }
+    .carousel-caption p { font-size: 1rem; }
+    .section-title { font-size: 1.75rem; }
+}

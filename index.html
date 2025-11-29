@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduShop - ร้านค้าออนไลน์เพื่อการศึกษา</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showPage('home-page')">
+                <i class="bi bi-shop"></i> EduShop
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('home-page')">หน้าแรก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('shop-page')">สินค้าทั้งหมด</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('members-page')">สมาชิกทีม</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('about-page')">เกี่ยวกับเรา</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('contact-page')">ติดต่อเรา</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <form class="d-flex me-3" onsubmit="searchProducts(event)">
+                        <input class="form-control me-2" type="search" id="searchInput" placeholder="ค้นหาสินค้า..." aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                    <a href="#" class="cart-icon me-3" onclick="showPage('cart-page')">
+                        <i class="bi bi-cart3 fs-4"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a>
+                    <!-- User Menu -->
+                    <div class="dropdown" id="userMenu">
+                        <a href="#" class="text-dark dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-4"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="showLoginModal()"><i class="bi bi-box-arrow-in-right me-2"></i>เข้าสู่ระบบ</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showRegisterModal()"><i class="bi bi-person-plus me-2"></i>สมัครสมาชิก</a></li>
+                        </ul>
+                    </div>
+                    <!-- Logged In User Menu -->
+                    <div class="dropdown d-none" id="loggedInUserMenu">
+                        <a href="#" class="text-dark dropdown-toggle" id="loggedInUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-4"></i>
+                            <span id="loggedInUserName">ผู้ใช้</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loggedInUserDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="showPage('profile-page')"><i class="bi bi-person me-2"></i>โปรไฟล์ของฉัน</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('orders-page')"><i class="bi bi-box-seam me-2"></i>คำสั่งซื้อของฉัน</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>ออกจากระบบ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">เข้าสู่ระบบ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">อีเมล</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">รหัสผ่าน</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">จำฉันไว้</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>ยังไม่มีบัญชี? <a href="#" onclick="switchToRegister()">สมัครสมาชิก</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">สมัครสมาชิก</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">ชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">อีเมล</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">รหัสผ่าน</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">ยืนยันรหัสผ่าน</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">ฉันยอมรับ <a href="#" onclick="showPage('terms-page')">เงื่อนไขการใช้งาน</a> และ <a href="#" onclick="showPage('privacy-page')">นโยบายความเป็นส่วนตัว</a></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">สมัครสมาชิก</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>มีบัญชีอยู่แล้ว? <a href="#" onclick="switchToLogin()">เข้าสู่ระบบ</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container my-4">
+        
+        <!-- Home Page -->
+        <section id="home-page" class="page-section active">
+            <!-- Hero Carousel -->
+            <div id="heroCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg" class="d-block w-100" alt="Promo 1">
+                        <div class="carousel-caption">
+                            <h1>โปรโมชั่นพิเศษ!</h1>
+                            <p>สินค้าใหม่มาแรง ลดราคาพิเศษสูงสุด 50%</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://cdn.pixabay.com/photo/2013/10/02/15/00/stadium-189777_1280.jpg" class="d-block w-100" alt="Promo 2">
+                        <div class="carousel-caption">
+                            <h1>จัดส่งฟรี!</h1>
+                            <p>เมื่อซื้อครบ 500 บาทขึ้นไป</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+
+            <!-- Categories -->
+            <h2 class="mb-4">หมวดหมู่สินค้า</h2>
+            <div class="row mb-5">
+                <div class="col-6 col-md-3">
+                    <div class="category-icon" onclick="filterByCategory('jersey')">
+                        <img src="t.png" class="icon-img" alt="เสื้อผ้า">
+                        <p>เสื้อผ้า</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="category-icon" onclick="filterByCategory('shoes')">
+                        <img src="s.png" class="icon-img" alt="รองเท้า">
+                        <p>รองเท้า</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="category-icon" onclick="filterByCategory('ball')">
+                        <img src="f.png" class="icon-img" alt="ลูกบอล">
+                        <p>ลูกบอล</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="category-icon" onclick="filterByCategory('equipment')">
+                        <img src="p.png" class="icon-img" alt="อุปกรณ์">
+                        <p>อุปกรณ์</p>
+                    </div>
+            </div>
+
+            <!-- Featured Products -->
+            <h2 class="mb-4">สินค้าแนะนำ</h2>
+            <div class="row" id="featured-products">
+                <!-- Products will be injected by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Shop Page -->
+        <section id="shop-page" class="page-section">
+            <div class="row">
+                <!-- Sidebar Filters -->
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">กรองสินค้า</h5>
+                            <hr>
+                            <h6>หมวดหมู่</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="jersey" id="cat-jersey" onchange="applyFilters()">
+                                <label class="form-check-label" for="cat-jersey">เสื้อผ้า</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="shoes" id="cat-shoes" onchange="applyFilters()">
+                                <label class="form-check-label" for="cat-shoes">รองเท้า</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ball" id="cat-ball" onchange="applyFilters()">
+                                <label class="form-check-label" for="cat-ball">ลูกบอล</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="equipment" id="cat-equipment" onchange="applyFilters()">
+                                <label class="form-check-label" for="cat-equipment">อุปกรณ์</label>
+                            </div>
+                            <hr>
+                            <h6>ช่วงราคา</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="0-500" id="price-1" onchange="applyFilters()">
+                                <label class="form-check-label" for="price-1">น้อยกว่า 500 บาท</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="500-2000" id="price-2" onchange="applyFilters()">
+                                <label class="form-check-label" for="price-2">500 - 2,000 บาท</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" value="2000-" id="price-3" onchange="applyFilters()">
+                                <label class="form-check-label" for="price-3">มากกว่า 2,000 บาท</label>
+                            </div>
+                            <button class="btn btn-secondary btn-sm mt-3" onclick="clearFilters()">ล้างตัวกรอง</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Grid -->
+                <div class="col-lg-9 col-md-8">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4>สินค้าทั้งหมด</h4>
+                        <select class="form-select w-auto" onchange="sortProducts(this.value)">
+                            <option value="default">จัดเรียงตาม</option>
+                            <option value="name-asc">ชื่อ: ก-ฮ</option>
+                            <option value="name-desc">ชื่อ: ฮ-ก</option>
+                            <option value="price-asc">ราคา: น้อย-มาก</option>
+                            <option value="price-desc">ราคา: มาก-น้อย</option>
+                        </select>
+                    </div>
+                    <div class="row" id="shop-products">
+                        <!-- Products will be injected by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Page -->
+        <section id="product-detail-page" class="page-section">
+            <button class="btn btn-link mb-3" onclick="showPage('shop-page')"><i class="bi bi-arrow-left"></i> กลับไปหน้าร้านค้า</button>
+            <div class="row">
+                <div class="col-md-6">
+                    <img id="detail-image" src="" alt="Product Image" class="product-detail-image">
+                </div>
+                <div class="col-md-6">
+                    <h2 id="detail-name"></h2>
+                    <h4 class="text-primary" id="detail-price"></h4>
+                    <p id="detail-description"></p>
+                    <hr>
+                    <div class="mb-3">
+                        <label class="form-label">เลือกไซส์:</label>
+                        <div id="detail-sizes">
+                            <!-- Sizes will be injected by JS -->
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="detail-quantity" class="form-label">จำนวน:</label>
+                        <input type="number" class="form-control quantity-selector" id="detail-quantity" value="1" min="1">
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="addToCartFromDetail()">
+                        <i class="bi bi-cart-plus"></i> เพิ่มลงตะกร้า
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Page -->
+        <section id="cart-page" class="page-section">
+            <h2 class="mb-4">ตะกร้าสินค้าของคุณ</h2>
+            <div id="cart-empty-message" class="alert alert-info" style="display: none;">
+                ตะกร้าสินค้าของคุณว่างเปล่า
+            </div>
+            <div id="cart-content">
+                <table class="table cart-table">
+                    <thead>
+                        <tr>
+                            <th>สินค้า</th>
+                            <th>ราคา</th>
+                            <th>จำนวน</th>
+                            <th>รวม</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items">
+                        <!-- Cart items will be injected by JS -->
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end">
+                    <h4>ยอดรวมทั้งหมด: <span id="cart-total">0</span> บาท</h4>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-secondary me-2" onclick="clearCart()">ล้างตะกร้า</button>
+                    <button class="btn btn-primary" onclick="proceedToCheckout()">ดำเนินการชำระเงิน</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Checkout Page -->
+        <section id="checkout-page" class="page-section">
+            <h2 class="mb-4">ชำระเงิน</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <form id="checkout-form">
+                        <h4>ที่อยู่จัดส่ง</h4>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">ชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" id="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">ที่อยู่</label>
+                            <textarea class="form-control" id="address" rows="3" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">อีเมล</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <hr>
+                        <h4>วิธีการชำระเงิน</h4>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment" id="cod" value="cod" checked>
+                            <label class="form-check-label" for="cod">ชำระเงินปลายทาง (COD)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment" id="transfer" value="transfer">
+                            <label class="form-check-label" for="transfer">โอนเงินผ่านธนาคาร</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg mt-4">ยืนยันการสั่งซื้อ</button>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">สรุปคำสั่งซื้อ</h5>
+                            <hr>
+                            <div id="checkout-summary">
+                                <!-- Summary will be injected by JS -->
+                            </div>
+                            <hr>
+                            <h4>ยอดรวม: <span id="checkout-total">0</span> บาท</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Page -->
+        <section id="profile-page" class="page-section">
+            <h2 class="mb-4">โปรไฟล์ของฉัน</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <i class="bi bi-person-circle fs-1 text-primary mb-3"></i>
+                            <h4 id="profileName">ชื่อผู้ใช้</h4>
+                            <p id="profileEmail">email@example.com</p>
+                            <button class="btn btn-outline-primary btn-sm" onclick="showPage('edit-profile-page')">
+                                <i class="bi bi-pencil me-1"></i>แก้ไขโปรไฟล์
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">ข้อมูลส่วนตัว</h5>
+                            <hr>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">ชื่อ-นามสกุล:</div>
+                                <div class="col-sm-9" id="profileFullName">-</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">อีเมล:</div>
+                                <div class="col-sm-9" id="profileEmailFull">-</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">เบอร์โทรศัพท์:</div>
+                                <div class="col-sm-9" id="profilePhone">-</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">ที่อยู่:</div>
+                                <div class="col-sm-9" id="profileAddress">-</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">วันที่สมัคร:</div>
+                                <div class="col-sm-9" id="profileRegisterDate">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Edit Profile Page -->
+        <section id="edit-profile-page" class="page-section">
+            <h2 class="mb-4">แก้ไขโปรไฟล์</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="editProfileForm">
+                                <h5 class="card-title mb-4">ข้อมูลส่วนตัว</h5>
+                                
+                                <div class="mb-3">
+                                    <label for="editName" class="form-label">ชื่อ-นามสกุล</label>
+                                    <input type="text" class="form-control" id="editName" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="editEmail" class="form-label">อีเมล</label>
+                                    <input type="email" class="form-control" id="editEmail" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="editPhone" class="form-label">เบอร์โทรศัพท์</label>
+                                    <input type="tel" class="form-control" id="editPhone">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="editAddress" class="form-label">ที่อยู่</label>
+                                    <textarea class="form-control" id="editAddress" rows="3"></textarea>
+                                </div>
+                                
+                                <hr>
+                                <h5 class="card-title mb-4">เปลี่ยนรหัสผ่าน</h5>
+                                <p class="text-muted">ปล่อยว่างหากไม่ต้องการเปลี่ยนรหัสผ่าน</p>
+                                
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">รหัสผ่านปัจจุบัน</label>
+                                    <input type="password" class="form-control" id="currentPassword">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">รหัสผ่านใหม่</label>
+                                    <input type="password" class="form-control" id="newPassword">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="confirmNewPassword" class="form-label">ยืนยันรหัสผ่านใหม่</label>
+                                    <input type="password" class="form-control" id="confirmNewPassword">
+                                </div>
+                                
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
+                                    <button type="button" class="btn btn-secondary" onclick="showPage('profile-page')">ยกเลิก</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">คำแนะนำ</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>อีเมลใช้สำหรับการเข้าสู่ระบบ</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>รหัสผ่านควรมีความยาวอย่างน้อย 6 ตัวอักษร</li>
+                                <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>ที่อยู่จะถูกใช้สำหรับการจัดส่งสินค้า</li>
+                                <li class="mb-2"><i class="bi bi-info-circle text-info me-2"></i>การเปลี่ยนแปลงจะมีผลทันที</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Page -->
+        <section id="orders-page" class="page-section">
+            <h2 class="mb-4">คำสั่งซื้อของฉัน</h2>
+            <div id="orders-container">
+                <!-- Orders will be injected by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Terms and Conditions Page -->
+        <section id="terms-page" class="page-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="card-title text-center mb-4">เงื่อนไขการใช้งาน</h2>
+                                <p class="text-muted text-center mb-4">อัปเดตล่าสุด: 1 มกราคม 2024</p>
+                                
+                                <h4>1. การยอมรับเงื่อนไข</h4>
+                                <p>การเข้าใช้งานและใช้บริการเว็บไซต์ EduShop ถือว่าท่านได้อ่าน เข้าใจ และยอมรับเงื่อนไขการใช้งานเหล่านี้ หากท่านไม่ยอมรับเงื่อนไขเหล่านี้ กรุณางดเว้นการใช้บริการของเรา</p>
+                                
+                                <h4 class="mt-4">2. คำจำกัดสิทธิ์</h4>
+                                <p>เนื้อหาทั้งหมดบนเว็บไซต์ EduShop เป็นทรัพย์สินของบริษัท ห้ามทำการคัดลอก ดัดแปลง หรือเผยแพร่โดยไม่ได้รับอนุญาต</p>
+                                
+                                <h4 class="mt-4">3. การสมัครสมาชิก</h4>
+                                <p>การสมัครสมาชิกต้องให้ข้อมูลที่ถูกต้องและเป็นจริง ผู้ใช้งานต้องรับผิดชอบต่อความปลอดภัยของบัญชีผู้ใช้งานของตนเอง</p>
+                                
+                                <h4 class="mt-4">4. การสั่งซื้อสินค้า</h4>
+                                <p>การสั่งซื้อสินค้าผ่านเว็บไซต์ถือเป็นการยืนยันคำสั่งซื้อ บริษัทขอสงวนสิทธิ์ในการยกเลิกคำสั่งซื้อในกรณีที่สินค้าหมดหรือมีข้อผิดพลาด</p>
+                                
+                                <h4 class="mt-4">5. การชำระเงิน</h4>
+                                <p>ลูกค้าสามารถเลือกชำระเงินได้ทั้งแบบชำระเงินปลายทาง (COD) และโอนเงินผ่านธนาคาร การชำระเงินต้องดำเนินการภายในระยะเวลาที่กำหนด</p>
+                                
+                                <h4 class="mt-4">6. การจัดส่ง</h4>
+                                <p>บริษัทจะดำเนินการจัดส่งสินค้าภายใน 3-5 วันทำการ หลังจากการยืนยันคำสั่งซื้อและการชำระเงินเรียบร้อย</p>
+                                
+                                <h4 class="mt-4">7. การคืนสินค้า</h4>
+                                <p>ลูกค้าสามารถคืนสินค้าได้ภายใน 7 วัน หลังจากวันที่ได้รับสินค้า โดยสินค้าต้องอยู่ในสภาพสมบูรณ์และมีหลักฐานการซื้อสินค้า</p>
+                                
+                                <h4 class="mt-4">8. ความเป็นส่วนตัว</h4>
+                                <p>เราให้ความสำคัญกับความเป็นส่วนตัวของข้อมูลลูกค้า ข้อมูลส่วนตัวจะถูกเก็บรักษาตามนโยบายความเป็นส่วนตัวของเรา</p>
+                                
+                                <h4 class="mt-4">9. การเปลี่ยนแปลงเงื่อนไข</h4>
+                                <p>บริษัทขอสงวนสิทธิ์ในการแก้ไขเปลี่ยนแปลงเงื่อนไขการใช้งานโดยไม่ต้องแจ้งให้ทราบล่วงหน้า</p>
+                                
+                                <h4 class="mt-4">10. ติดต่อเรา</h4>
+                                <p>หากมีข้อสงสัยเกี่ยวกับเงื่อนไขการใช้งาน สามารถติดต่อเราได้ที่:</p>
+                                <ul>
+                                    <li>อีเมล: xnxx@edushop.com</li>
+                                    <li>โทรศัพท์: 02-123-4567</li>
+                                    <li>ที่อยู่: 85/1 หมู่ 2 ถ.แจ้งวัฒนะ ต.บางตลาด จ.นนทบุรี 11120</li>
+                                </ul>
+                                
+                                <div class="text-center mt-5">
+                                    <button class="btn btn-primary" onclick="showPage('home-page')">กลับสู่หน้าหลัก</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Privacy Policy Page -->
+        <section id="privacy-page" class="page-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="card-title text-center mb-4">นโยบายความเป็นส่วนตัว</h2>
+                                <p class="text-muted text-center mb-4">อัปเดตล่าสุด: 1 มกราคม 2024</p>
+                                
+                                <h4>1. ข้อมูลที่เราเก็บรวบรวม</h4>
+                                <p>เราอาจเก็บรวบรวมข้อมูลส่วนตัวต่อไปนี้จากคุณ:</p>
+                                <ul>
+                                    <li><strong>ข้อมูลบัญชี:</strong> ชื่อ-นามสกุล, อีเมล, รหัสผ่าน, เบอร์โทรศัพท์, ที่อยู่</li>
+                                    <li><strong>ข้อมูลการสั่งซื้อ:</strong> ประวัติการสั่งซื้อ, สินค้าที่สนใจ, ข้อมูลการชำระเงิน</li>
+                                    <li><strong>ข้อมูลการใช้งาน:</strong> ที่อยู่ IP, ประเภทเบราว์เซอร์, ข้อมูลคุกกี้, หน้าที่เข้าชม</li>
+                                    <li><strong>ข้อมูลการสื่อสาร:</strong> ข้อความที่ส่งถึงเรา, บันทึกการสนทนา</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">2. วัตถุประสงค์การเก็บรวบรวมข้อมูล</h4>
+                                <p>เราใช้ข้อมูลส่วนตัวของคุณเพื่อ:</p>
+                                <ul>
+                                    <li>จัดหาและให้บริการผลิตภัณฑ์และบริการของเรา</li>
+                                    <li>ประมวลผลคำสั่งซื้อและการจัดส่ง</li>
+                                    <li>สื่อสารกับคุณเกี่ยวกับบริการ</li>
+                                    <li>ปรับปรุงและพัฒนาผลิตภัณฑ์และบริการ</li>
+                                    <li>วิเคราะห์พฤติกรรมการใช้งานเว็บไซต์</li>
+                                    <li>ป้องกันการฉ้อโกงและความปลอดภัย</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">3. การแชร์ข้อมูล</h4>
+                                <p>เราไม่ขายหรือเช่าข้อมูลส่วนตัวของคุณให้กับบุคคลที่สาม ยกเว้นในกรณีต่อไปนี้:</p>
+                                <ul>
+                                    <li><strong>ผู้ให้บริการการจัดส่ง:</strong> เพื่อการจัดส่งสินค้า</li>
+                                    <li><strong>ผู้ให้บริการการชำระเงิน:</strong> เพื่อดำเนินการชำระเงิน</li>
+                                    <li><strong>หน่วยงานรัฐ:</strong> เมื่อจำเป็นตามกฎหมาย</li>
+                                    <li><strong>พันธมิตรทางธุรกิจ:</strong> เพื่อให้บริการที่ดีขึ้น</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">4. ความปลอดภัยของข้อมูล</h4>
+                                <p>เราใช้มาตรการรักษาความปลอดภัยต่อไปนี้เพื่อปกป้องข้อมูลของคุณ:</p>
+                                <ul>
+                                    <li>การเข้ารหัส SSL สำหรับการส่งข้อมูล</li>
+                                    <li>การจำกัดการเข้าถึงข้อมูลส่วนตัว</li>
+                                    <li>การอัปเดตระบบความปลอดภัยอย่างสม่ำเสมอ</li>
+                                    <li>การฝึกอบรมพนักงานเกี่ยวกับความเป็นส่วนตัว</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">5. สิทธิของเจ้าของข้อมูล</h4>
+                                <p>คุณมีสิทธิต่อไปนี้เกี่ยวกับข้อมูลส่วนตัวของคุณ:</p>
+                                <ul>
+                                    <li><strong>สิทธิในการเข้าถึง:</strong> ขอข้อมูลส่วนตัวที่เราเก็บรวบรวม</li>
+                                    <li><strong>สิทธิในการแก้ไข:</strong> แก้ไขข้อมูลส่วนตัวที่ไม่ถูกต้อง</li>
+                                    <li><strong>สิทธิในการลบ:</strong> ขอให้ลบข้อมูลส่วนตัวของคุณ</li>
+                                    <li><strong>สิทธิในการจำกัด:</strong> จำกัดการประมวลผลข้อมูล</li>
+                                    <li><strong>สิทธิในการคัดค้าน:</strong> คัดค้านการใช้ข้อมูลส่วนตัว</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">6. คุกกี้ (Cookies)</h4>
+                                <p>เราใช้คุกกี้เพื่อ:</p>
+                                <ul>
+                                    <li>จดจำการตั้งค่าและการตั้งค่า</li>
+                                    <li>ปรับปรุงประสบการณ์การใช้งาน</li>
+                                    <li>วิเคราะห์การใช้งานเว็บไซต์</li>
+                                    <li>การตลาดออนไลน์</li>
+                                </ul>
+                                <p>คุณสามารถควบคุมคุกกี้ผ่านการตั้งค่าเบราว์เซอร์</p>
+                                
+                                <h4 class="mt-4">7. การเก็บรักษาข้อมูล</h4>
+                                <p>เราเก็บรักษาข้อมูลส่วนตัวของคุณตราบเท่าที่:</p>
+                                <ul>
+                                    <li>จำเป็นต่อการให้บริการ</li>
+                                    <li>คุณยังไม่ได้ขอให้ลบข้อมูล</li>
+                                    <li>ตามที่กฎหมายกำหนด</li>
+                                    <li>เพื่อปฏิบัติตามข้อกำหนดทางกฎหมาย</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">8. สิทธิของเด็ก</h4>
+                                <p>เราไม่รวบรวมข้อมูลส่วนตัวจากเด็กที่มีอายุต่ำกว่า 13 ปี หากเราทราบว่ามีการเก็บข้อมูลจากเด็ก เราจะดำเนินการลบข้อมูลทันที</p>
+                                
+                                <h4 class="mt-4">9. การเปลี่ยนแปลงนโยบาย</h4>
+                                <p>เราอาจปรับปรุงนโยบายความเป็นส่วนตัวเป็นครั้งคราว การเปลี่ยนแปลงจะมีผลบังคับในวันที่ระบุในนโยบายฉบับใหม่</p>
+                                
+                                <h4 class="mt-4">10. ติดต่อเรา</h4>
+                                <p>หากคุณมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัว สามารถติดต่อเราได้ที่:</p>
+                                <ul>
+                                    <li><strong>เจ้าหน้าที่คุ้มคุมข้อมูลส่วนตัว:</strong> privacy@edushop.com</li>
+                                    <li><strong>อีเมล:</strong> xnxx@edushop.com</li>
+                                    <li><strong>โทรศัพท์:</strong> 02-123-4567</li>
+                                    <li><strong>ที่อยู่:</strong> 85/1 หมู่ 2 ถ.แจ้งวัฒนะ ต.บางตลาด จ.นนทบุรี 11120</li>
+                                </ul>
+                                
+                                <div class="alert alert-info mt-4">
+                                    <h5><i class="bi bi-shield-check me-2"></i>คำมั่นสัญญา</h5>
+                                    <p class="mb-0">เรามุ่งมั่นที่จะปกป้องความเป็นส่วนตัวของคุณและใช้ข้อมูลของคุณอย่างมีความรับผิดชอบ นโยบายฉบับนี้อธิบายถึงวิธีที่เราเก็บ ใช้ และปกป้องข้อมูลของคุณ</p>
+                                </div>
+                                
+                                <div class="text-center mt-5">
+                                    <button class="btn btn-primary" onclick="showPage('home-page')">กลับสู่หน้าหลัก</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Members Page -->
+        <section id="members-page" class="page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">Team EduShop</h2>
+                        <p class="text-center mb-5">EduShop เป็นบริษัทที่มุ่งมั่นในการสร้างนวัตกรรมใหม่ๆ ในวงการค้าปลีกออนไลน์ ด้วยทีมงานผู้เชี่ยวชาญที่มีประสบการณ์ด้านเทคโนโลยีและธุรกิจค้าปลีก เราพร้อมมอบประสบการณ์การช้อปปิ้งที่ดีที่สุดให้กับลูกค้า</p>
+                    </div>
+                </div>
+                <div class="row" id="team-members">
+                    <!-- Team members will be injected by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about-page" class="page-section">
+            <h2>เกี่ยวกับ EduShop</h2>
+            <p>EduShop เป็นเว็บไซต์ตัวอย่างที่พัฒนาขึ้นเพื่อการศึกษา จำลองการทำงานของร้านค้าออนไลน์ (E-Commerce) โดยใช้เทคโนโลยีพื้นฐานของเว็บไซต์ ได้แก่ HTML, CSS, และ JavaScript ร่วมกับเฟรมเวิร์ก Bootstrap 5</p>
+            <p>เว็บไซต์นี้มีจุดประสงค์เพื่อแสดงให้เห็นถึงการทำงานของระบบต่างๆ ที่จำเป็นสำหรับร้านค้าออนไลน์ เช่น การแสดงสินค้า, การค้นหาและกรองสินค้า, ระบบตะกร้าสินค้า, และขั้นตอนการชำระเงิน ทั้งหมดนี้ถูกสร้างขึ้นมาเพื่อเป็นแนวทางในการเรียนรู้และพัฒนาเว็บไซต์ในรูปแบบต่างๆ ต่อไป</p>
+            <img src="https://img2.pic.in.th/pic/EC2F6F0A-B962-4787-A865-91B316FF8129.jpg" class="img-fluid rounded mt-4" alt="About Us">
+        </section>
+
+        <!-- Contact Page -->
+        <section id="contact-page" class="page-section">
+            <h2>ติดต่อเรา</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="contact-form">
+                        <div class="mb-3">
+                            <label for="contactName" class="form-label">ชื่อของคุณ</label>
+                            <input type="text" class="form-control" id="contactName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactEmail" class="form-label">อีเมลของคุณ</label>
+                            <input type="email" class="form-control" id="contactEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactMessage" class="form-label">ข้อความ</label>
+                            <textarea class="form-control" id="contactMessage" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">ส่งข้อความ</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <h5>ข้อมูลติดต่อ</h5>
+                    <p><i class="bi bi-geo-alt"></i> 85/1 หมู่ 2 ถ.แจ้งวัฒนะ ต.บางตลาด จ.นนทบุรี 11120</p>
+                    <p><i class="bi bi-telephone"></i> 02-123-4567</p>
+                    <p><i class="bi bi-envelope"></i> xnxx@edushop.com</p>
+                    <div class="mt-4">
+                        <h5>แผนที่</h5>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.623041384195!2d100.495425!3d13.9137537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e281f9e2acda7f%3A0xacf38f6e7a43a48b!2sPanyapiwat%20Institute%20of%20Management%20(PIM)!5e0!3m2!1sth!2sth!4v1700000000001" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>EduShop</h5>
+                    <p>เว็บไซต์ตัวอย่างเพื่อการศึกษา</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>ลิงก์ด่วน</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" onclick="showPage('about-page')">เกี่ยวกับเรา</a></li>
+                        <li><a href="#" onclick="showPage('contact-page')">ติดต่อเรา</a></li>
+                        <li><a href="#" onclick="showPage('terms-page')">เงื่อนไขการใช้งาน</a></li>
+                        <li><a href="#" onclick="showPage('privacy-page')">นโยบายความเป็นส่วนตัว</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+    <h5>ติดตามเรา</h5>
+
+    <a href="https://www.facebook.com/pimfanpage" class="me-2" target="_blank">
+        <i class="bi bi-facebook fs-4"></i>
+    </a>
+
+    <a href="https://www.instagram.com/teampim/" class="me-2" target="_blank">
+        <i class="bi bi-instagram fs-4"></i>
+    </a>
+
+    <a href="https://www.pim.ac.th/" class="me-2" target="_blank">
+        <i class="bi bi-twitter fs-4"></i>
+    </a>
+</div>
+
+            </div>
+            <hr class="bg-light">
+            <p class="text-center mb-0">&copy; 2024 EduShop. All Rights Reserved. (Created for Educational Purposes)</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">🛒 แจ้งเตือน</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="modalMessage">เพิ่ม "เสื้อ MUANGTHONG UNITED" ไซส์ S จำนวน 1 ชิ้น เข้าตระกร้าสินค้าแล้ว!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">ตกลง</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
