@@ -67,7 +67,7 @@ const teamMembers = [
         id: 3,
         name: "Patiphat Chunoon",
         position: "Developer",
-        image: "https://scontent.fbkk7-3.fna.fbcdn.net/v/t39.30808-6/455818097_2149458278759264_860512778836729733_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGKoHQ8Z2CtiXelmg2o9UlcqVFxhDE5kL-pUXGEMTmQvy7vGd-PXKVpy4KjLMkcooSpAZqdTjba9_c0Wlyu513d&_nc_ohc=sSsWCpETHkoQ7kNvwFLPXT2&_nc_oc=Adnzn003ScpRX3iMCtOkVeO7ErnpHc7DOlj7J5VHQeDnJ1LFOe7UHaLEZofBDP3AspA&_nc_zt=23&_nc_ht=scontent.fbkk7-3.fna&_nc_gid=hgJb-fjH7vH2brkZeaJNog&oh=00_Afhbrp83ryZ4EtN_2n5WqAUAvGkiOzyy4WfXHpw5PnUwxQ&oe=69277722",
+        image: "https://scontent.fbkk12-4.fna.fbcdn.net/v/t39.30808-1/455818097_2149458278759264_860512778836729733_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_ohc=c6eSN_bDjFYQ7kNvwGdknhO&_nc_oc=AdkB7JNkFY-qBSDD6x1ezxc5FX2Y08f8XQSrVYgykrITPRVuQy6PM1pRuZY6C0_iKP265Q2Rtd4XmjQXUwdvnJzT&_nc_zt=24&_nc_ht=scontent.fbkk12-4.fna&_nc_gid=0k4Wit4oW0SyQu7Zmp9eEA&oh=00_Afil993GIhcIgMlg5edsf-2JulzxV41Cc2Zorpj4kyt_zw&oe=69308968",
         github: "https://github.com/PATIPHATCHUNOON",
         facebook: "https://www.facebook.com/Beam007x",
         instagram: "https://www.instagram.com/_patiphat_11/"
